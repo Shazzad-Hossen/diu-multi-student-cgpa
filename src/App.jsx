@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ExcelJS from 'exceljs'
@@ -15,7 +15,7 @@ const App = () => {
     setLoading(true);
     (async()=>{
      try {
-      const res = await axios.get('http://software.diu.edu.bd:8006/result/semesterList');
+      const res = await axios.get('https://diu-cgpa-proxy-44yg.vercel.app/result/semesterList');
       setSemesters(res.data);
       setLoading(false);
      } catch (error) {
@@ -40,12 +40,12 @@ const App = () => {
     await Promise.all(studentIds.map(async stuId=>{
      
       try {
-        const info = await axios.get(`http://software.diu.edu.bd:8006/result/studentInfo?studentId=${stuId}`);
+        const info = await axios.get(`https://diu-cgpa-proxy-44yg.vercel.app/result/studentInfo?studentId=${stuId}`);
         const FILTERED_SEMESTERS =semesters.filter(s=>Number(s.semesterId)>=Number(info.data.semesterId));
         let res=[];
         await Promise.all(FILTERED_SEMESTERS.map(async s=>{
          try {
-          const response = await axios.get(`http://software.diu.edu.bd:8006/result?semesterId=${s.semesterId}&studentId=${stuId}`);
+          const response = await axios.get(`https://diu-cgpa-proxy-44yg.vercel.app/result?semesterId=${s.semesterId}&studentId=${stuId}`);
          if(response.data.length>0) res=[...res,  ...response.data]
           return s;
           
